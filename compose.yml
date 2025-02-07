@@ -1,0 +1,27 @@
+services:
+  web:
+    build: fastapi
+    ports:
+      - 8000:8000
+    volumes:
+      - ./fastapi:/app
+    networks:
+      - ollama_net
+
+  ollama:
+    build: ollama
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_vol:/ollama
+    networks:
+      - ollama_net
+    entrypoint: ["/bin/sh", "/pull-llava7b.sh"]
+
+networks:
+  ollama_net:
+    driver: bridge
+
+volumes:
+  ollama_vol: 
+    driver: local
